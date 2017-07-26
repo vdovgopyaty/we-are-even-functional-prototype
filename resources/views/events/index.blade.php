@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <h1>Events</h1>
+            <h1>Событие</h1>
 
             <div class="row">
                 @foreach($events as $event)

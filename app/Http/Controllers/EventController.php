@@ -13,7 +13,7 @@ class EventController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Event $event)
+    public function index()
     {
         $user = Auth::user();
         $events = $user->events()->get();
@@ -28,62 +28,93 @@ class EventController extends Controller
      */
     public function create()
     {
-        //
+        return view('events.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
+     * @param Event $event
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Event $event)
     {
-        //
+        $this->validate(request(), [
+            'name' => 'required|max:30',
+            'place' => 'max:30',
+            'description' => 'max:255',
+        ]);
+
+        $event->create(
+            request([
+                'name', 'place', 'description', 'image'
+            ])
+        );
+
+        return redirect()->route('events.show', $event);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param Event $event
      * @return \Illuminate\Http\Response
+     * @internal param int $id
      */
-    public function show($id)
+    public function show(Event $event)
     {
-        //
+        return view('events.show', compact('event'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param Event $event
      * @return \Illuminate\Http\Response
+     * @internal param int $id
      */
-    public function edit($id)
+    public function edit(Event $event)
     {
-        //
+        return view('events.edit', compact('event'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param Event $event
      * @return \Illuminate\Http\Response
+     * @internal param int $id
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Event $event)
     {
-        //
+        $this->validate(request(), [
+            'name' => 'required|max:30',
+            'place' => 'max:30',
+            'description' => 'max:255',
+        ]);
+
+        $event->update(
+            request([
+                'name', 'place', 'description', 'image'
+            ])
+        );
+
+        return redirect()->route('events.show', $event);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param Event $event
      * @return \Illuminate\Http\Response
+     * @internal param int $id
      */
-    public function destroy($id)
+    public function destroy(Event $event)
     {
-        //
+        $event->delete();
+
+        return redirect()->route('events.index');
     }
 }

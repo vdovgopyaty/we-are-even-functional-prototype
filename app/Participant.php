@@ -10,6 +10,14 @@ class Participant extends Model
         'name',
     ];
 
+//    public static function createParticipant(User $user)
+//    {
+//        $participant = new Participant([
+//            'name' => $user->name,
+//        ]);
+//        $participant->save();
+//    }
+
     public function event()
     {
         return $this->belongsTo('App\Event');
