@@ -12,7 +12,7 @@ class CurrenciesTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('users')->insert(
+        DB::table('currencies')->insert(
             [
                 'id' => 'RUB',
                 'code' => 'RUB',
