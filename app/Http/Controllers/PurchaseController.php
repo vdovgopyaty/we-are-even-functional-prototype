@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Event;
 use App\Purchase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
