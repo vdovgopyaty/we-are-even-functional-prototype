@@ -30,6 +30,8 @@ class AddEventIdToParticipantsTable extends Migration
     public function down()
     {
         Schema::table('participants', function (Blueprint $table) {
+            $table->dropForeign('participants_event_id_foreign');
+
             $table->dropColumn('event_id');
         });
     }

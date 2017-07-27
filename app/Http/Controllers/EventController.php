@@ -11,14 +11,19 @@ class EventController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
         $events = $user->events()->get();
 
-        return view('events.index', compact('events'));
+        if ($request->ajax() || $request->wantsJson() || $request['api_token']) {
+            return $events;
+        } else {
+            return view('events.index', compact('events'));
+        }
     }
 
     /**
@@ -52,19 +57,27 @@ class EventController extends Controller
             ])
         );
 
-        return redirect()->route('events.show', $event);
+        if ($request->ajax() || $request->wantsJson() || $request['api_token']) {
+            return response()->json($event, 201);
+        } else {
+            return redirect()->route('events.show', $event);
+        }
     }
 
     /**
      * Display the specified resource.
      *
+     * @param Request $request
      * @param Event $event
      * @return \Illuminate\Http\Response
-     * @internal param int $id
      */
-    public function show(Event $event)
+    public function show(Request $request, Event $event)
     {
-        return view('events.show', compact('event'));
+        if ($request->ajax() || $request->wantsJson() || $request['api_token']) {
+            return $event;
+        } else {
+            return view('events.show', compact('event'));
+        }
     }
 
     /**
@@ -72,7 +85,6 @@ class EventController extends Controller
      *
      * @param Event $event
      * @return \Illuminate\Http\Response
-     * @internal param int $id
      */
     public function edit(Event $event)
     {
@@ -85,7 +97,6 @@ class EventController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @param Event $event
      * @return \Illuminate\Http\Response
-     * @internal param int $id
      */
     public function update(Request $request, Event $event)
     {
@@ -101,20 +112,28 @@ class EventController extends Controller
             ])
         );
 
-        return redirect()->route('events.show', $event);
+        if ($request->ajax() || $request->wantsJson() || $request['api_token']) {
+            return response()->json($event, 200);
+        } else {
+            return redirect()->route('events.show', $event);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      *
+     * @param Request $request
      * @param Event $event
      * @return \Illuminate\Http\Response
-     * @internal param int $id
      */
-    public function destroy(Event $event)
+    public function destroy(Request $request, Event $event)
     {
         $event->delete();
 
-        return redirect()->route('events.index');
+        if ($request->ajax() || $request->wantsJson() || $request['api_token']) {
+            return response()->json(null, 204);
+        } else {
+            return redirect()->route('events.index');
+        }
     }
 }

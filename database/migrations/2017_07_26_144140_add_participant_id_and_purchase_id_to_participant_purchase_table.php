@@ -34,6 +34,9 @@ class AddParticipantIdAndPurchaseIdToParticipantPurchaseTable extends Migration
     public function down()
     {
         Schema::table('participant_purchase', function (Blueprint $table) {
+            $table->dropForeign('participant_purchase_participant_id_foreign');
+            $table->dropForeign('participant_purchase_purchase_id_foreign');
+
             $table->dropColumn('participant_id');
             $table->dropColumn('purchase_id');
         });

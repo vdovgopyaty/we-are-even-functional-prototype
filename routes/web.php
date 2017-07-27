@@ -19,6 +19,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::resource('events', 'EventController');
-
-Route::resource('purchases', 'PurchaseController');
+Route::middleware('auth')->group(function () {
+    Route::resource('events', 'EventController');
+    Route::resource('purchases', 'PurchaseController');
+});

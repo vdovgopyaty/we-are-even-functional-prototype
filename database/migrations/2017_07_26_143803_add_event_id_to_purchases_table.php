@@ -30,6 +30,8 @@ class AddEventIdToPurchasesTable extends Migration
     public function down()
     {
         Schema::table('purchases', function (Blueprint $table) {
+            $table->dropForeign('purchases_event_id_foreign');
+
             $table->dropColumn('event_id');
         });
     }
