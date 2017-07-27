@@ -13,10 +13,24 @@ class EventsTableSeeder extends Seeder
     public function run()
     {
         DB::table('events')->insert([
-            'name' => 'Event 1',
-            'place' => 'Place',
-            'description' => 'Description',
-            'user_id' => 1,
+            [
+                'name' => 'Event 1',
+                'place' => 'Place',
+                'description' => 'Description',
+                'user_id' => 1,
+            ],
+            [
+                'name' => 'Event 2',
+                'place' => 'Place',
+                'description' => 'Description',
+                'user_id' => 1,
+            ],
+            [
+                'name' => 'User 2 Event 1',
+                'place' => 'Place',
+                'description' => 'Description',
+                'user_id' => 2,
+            ],
         ]);
     }
 }

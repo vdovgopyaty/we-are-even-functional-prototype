@@ -19,7 +19,7 @@ class EventController extends Controller
         $user = Auth::user();
         $events = $user->events()->get();
 
-        if ($request->ajax() || $request->wantsJson() || $request['api_token']) {
+        if ($request->route()->getPrefix() == 'api') {
             return $events;
         } else {
             return view('events.index', compact('events'));
@@ -57,7 +57,7 @@ class EventController extends Controller
             ])
         );
 
-        if ($request->ajax() || $request->wantsJson() || $request['api_token']) {
+        if ($request->route()->getPrefix() == 'api') {
             return response()->json($event, 201);
         } else {
             return redirect()->route('events.show', $event);
@@ -68,12 +68,15 @@ class EventController extends Controller
      * Display the specified resource.
      *
      * @param Request $request
-     * @param Event $event
+     * @param $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, Event $event)
+    public function show(Request $request, $id)
     {
-        if ($request->ajax() || $request->wantsJson() || $request['api_token']) {
+        $event = Auth::user()
+            ->events()->withCount('purchases')->find($id);
+
+        if ($request->route()->getPrefix() == 'api') {
             return $event;
         } else {
             return view('events.show', compact('event'));
@@ -83,11 +86,13 @@ class EventController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Event $event
+     * @param $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Event $event)
+    public function edit($id)
     {
+        $event = Auth::user()->events()->find($id);
+
         return view('events.edit', compact('event'));
     }
 
@@ -95,10 +100,10 @@ class EventController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param Event $event
+     * @param $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Event $event)
+    public function update(Request $request, $id)
     {
         $this->validate(request(), [
             'name' => 'required|max:30',
@@ -106,13 +111,15 @@ class EventController extends Controller
             'description' => 'max:255',
         ]);
 
+        $event = Auth::user()->events()->find($id);
+
         $event->update(
             request([
                 'name', 'place', 'description', 'image'
             ])
         );
 
-        if ($request->ajax() || $request->wantsJson() || $request['api_token']) {
+        if ($request->route()->getPrefix() == 'api') {
             return response()->json($event, 200);
         } else {
             return redirect()->route('events.show', $event);
@@ -123,14 +130,15 @@ class EventController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Request $request
-     * @param Event $event
+     * @param $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Event $event)
+    public function destroy(Request $request, $id)
     {
+        $event = Auth::user()->events()->find($id);
         $event->delete();
 
-        if ($request->ajax() || $request->wantsJson() || $request['api_token']) {
+        if ($request->route()->getPrefix() == 'api') {
             return response()->json(null, 204);
         } else {
             return redirect()->route('events.index');
