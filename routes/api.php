@@ -20,5 +20,5 @@ Route::middleware('auth:api')->group(function () {
     });
 
     Route::resource('events', 'EventController');
-    Route::resource('purchases', 'PurchaseController');
+    Route::resource('events.purchases', 'PurchaseController');
 });
