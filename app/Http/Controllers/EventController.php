@@ -16,8 +16,10 @@ class EventController extends Controller
      */
     public function index(Request $request)
     {
-        $user = Auth::user();
-        $events = $user->events()->get();
+        $events = Auth::user()->events()
+            ->withCount('purchases')
+            ->withCount('participants')
+            ->get();
 
         if ($request->route()->getPrefix() == 'api') {
             return $events;
@@ -74,7 +76,10 @@ class EventController extends Controller
     public function show(Request $request, $id)
     {
         $event = Auth::user()
-            ->events()->withCount('purchases')->find($id);
+            ->events()
+            ->with('purchases')
+            ->withCount('participants')
+            ->find($id);
 
         if ($request->route()->getPrefix() == 'api') {
             return $event;
