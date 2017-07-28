@@ -7,16 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Participant extends Model
 {
     protected $fillable = [
-        'name',
+        'name', 'event_id',
     ];
-
-//    public static function createParticipant(User $user)
-//    {
-//        $participant = new Participant([
-//            'name' => $user->name,
-//        ]);
-//        $participant->save();
-//    }
 
     public function event()
     {

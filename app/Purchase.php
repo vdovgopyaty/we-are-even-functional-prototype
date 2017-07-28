@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Purchase extends Model
 {
     protected $fillable = [
-        'name', 'description', 'image',
+        'name', 'description', 'image', 'event_id',
     ];
 
     public function event()
@@ -17,6 +17,6 @@ class Purchase extends Model
 
     public function participants()
     {
-        return $this->belongsToMany('App\Participant');
+        return $this->belongsToMany('App\Participant')->withPivot('amount');
     }
 }

@@ -22,4 +22,5 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::middleware('auth')->group(function () {
     Route::resource('events', 'EventController');
     Route::resource('events.purchases', 'PurchaseController');
+    Route::resource('events.participants', 'ParticipantController');
 });

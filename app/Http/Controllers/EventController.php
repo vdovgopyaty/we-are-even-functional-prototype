@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Event;
+use App\Participant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -53,11 +54,19 @@ class EventController extends Controller
             'description' => 'max:255',
         ]);
 
-        $event->create(
+        $event = $event->create(
             request([
-                'name', 'place', 'description', 'image'
+                'name', 'place', 'description', 'image',
             ])
         );
+
+        $user = Auth::user();
+
+        $participant = new Participant();
+        $participant->create([
+            'event_id' => $event['id'],
+            'name' => $user['name'],
+        ]);
 
         if ($request->route()->getPrefix() == 'api') {
             return response()->json($event, 201);
