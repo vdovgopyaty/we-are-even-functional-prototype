@@ -17,10 +17,42 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
-
 Route::middleware('auth')->group(function () {
-    Route::resource('events', 'EventController');
-    Route::resource('events.purchases', 'PurchaseController');
-    Route::resource('events.participants', 'ParticipantController');
+
+    Route::resource('events', 'EventController', [
+        'names' => [
+            'index' => 'events',
+            'create' => 'events.create',
+            'store' => 'events.store',
+            'show' => 'events.show',
+            'edit' => 'events.edit',
+            'update' => 'events.update',
+            'destroy' => 'events.destroy',
+        ]
+    ]);
+
+    Route::resource('events.purchases', 'PurchaseController', [
+        'names' => [
+            'index' => 'purchases',
+            'create' => 'purchases.create',
+            'store' => 'purchases.store',
+            'show' => 'purchases.show',
+            'edit' => 'purchases.edit',
+            'update' => 'purchases.update',
+            'destroy' => 'purchases.destroy',
+        ]
+    ]);
+
+    Route::resource('events.participants', 'ParticipantController', [
+        'names' => [
+            'index' => 'participants',
+            'create' => 'participants.create',
+            'store' => 'participants.store',
+            'show' => 'participants.show',
+            'edit' => 'participants.edit',
+            'update' => 'participants.update',
+            'destroy' => 'participants.destroy',
+        ]
+    ]);
+
 });
