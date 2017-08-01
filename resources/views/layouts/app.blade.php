@@ -9,11 +9,37 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>@yield('title') — {{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+
+    <style>
+        .text-center {
+            text-align: center;
+        }
+        .mdl-card {
+            width: 100%;
+            min-height: 180px;
+        }
+        .mdl-list .mdl-list__item-avatar {
+            font-size: 28px;
+            text-align: center;
+            padding-top: 7px;
+        }
+        .mdl-list .mdl-list__item-secondary-action .material-icons {
+            font-size: 38px;
+        }
+        .purchases {
+            margin-top: -35px;
+        }
+        @media screen and (max-width: 1024px) {
+            .mdl-layout__drawer-button {
+                color: rgb(255,255,255);
+            }
+        }
+    </style>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -28,7 +54,7 @@
     <header class="mdl-layout__header">
         <div class="mdl-layout__header-row">
             <!-- Title -->
-            <span class="mdl-layout-title">{{ config('app.name', 'Laravel') }}</span>
+            <span class="mdl-layout-title">@yield('title')</span>
             <!-- Add spacer, to align navigation to the right -->
             <div class="mdl-layout-spacer"></div>
             <!-- Navigation. We hide it in small screens. -->
@@ -37,12 +63,16 @@
             </nav>
         </div>
     </header>
+
+    @section('menu')
     <div class="mdl-layout__drawer">
-        <span class="mdl-layout-title">Title</span>
+        <span class="mdl-layout-title">Меню</span>
         <nav class="mdl-navigation">
             @include('layouts.nav')
         </nav>
     </div>
+    @show
+
     <main class="mdl-layout__content">
         <div class="page-content">
             @yield('content')

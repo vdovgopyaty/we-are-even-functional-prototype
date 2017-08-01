@@ -1,21 +1,35 @@
 @extends('layouts.app')
 
-@section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <h1>Событие</h1>
+@section('title', 'События')
 
-            <div class="row">
-                @foreach($events as $event)
-                <div class="col-md-3">
-                    <h2>{{ $event->name }}</h2>
-                    <p>{{ $event->description }}</p>
-                    <p><a href="/events/{{ $event->id }}" class="btn btn-default">Перейти</a></p>
+@section('content')
+
+<div class="mdl-grid">
+
+        @foreach($events as $event)
+        <div class="mdl-cell mdl-cell--4-col mdl-cell--12-col-phone">
+            <div class="mdl-card mdl-shadow--2dp">
+                <div class="mdl-card__title">
+                    <h2 class="mdl-card__title-text">{{ $event->name }}</h2>
                 </div>
-                @endforeach
+                <div class="mdl-card__supporting-text">
+                    {{ $event->description }}
+                </div>
+                <div class="mdl-card__actions mdl-card--border">
+                    <a href="/events/{{ $event->id }}"
+                       class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                        Перейти
+                    </a>
+                </div>
+                <div class="mdl-card__menu">
+                    <a href="/events/{{ $event->id }}/edit" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                        <i class="material-icons">edit</i>
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
+        @endforeach
+
 </div>
+
 @endsection

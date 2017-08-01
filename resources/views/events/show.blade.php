@@ -1,23 +1,57 @@
 @extends('layouts.app')
 
-@section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-lg-12 text-right">
-            @if (Auth::check())
-            <a href="{{ url('/events/' . $event->id . '/edit') }}" class="btn btn-default">Редактировать</a>
-            @endif
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-12 blog-main">
-            <div class="blog-post">
-                <h2 class="blog-post-title">{{ $event->name }}</h2>
+@section('title', $event->name)
 
-                <p>{{ $event->place }}</p>
-                <p>{{ $event->description }}</p>
-            </div>
-        </div>
-    </div>
+@section('menu')
+<div onclick="javascript:location.href='{{ url()->previous() }}'" aria-expanded="false" role="button" tabindex="0"
+     class="mdl-layout__drawer-button">
+    <i class="material-icons">keyboard_arrow_left</i>
 </div>
+@endsection
+
+@section('content')
+
+<div class="mdl-grid">
+
+    <div class="mdl-cell mdl-cell--4-col mdl-cell--12-col-phone text-center">
+        <form action="#">
+            <div class="mdl-textfield mdl-js-textfield">
+                <input class="mdl-textfield__input" type="text" id="sample1" value="{{ $event->place }}">
+                <label class="mdl-textfield__label" for="sample1">Место</label>
+            </div>
+            <div class="mdl-textfield mdl-js-textfield">
+                <input class="mdl-textfield__input" type="text" id="sample1" value="{{ $event->description }}">
+                <label class="mdl-textfield__label" for="sample1">Описание</label>
+            </div>
+        </form>
+    </div>
+
+</div>
+<div class="mdl-grid purchases">
+
+    <div class="mdl-cell mdl-cell--4-col mdl-cell--12-col-phone">
+        <ul class="mdl-list">
+
+            @foreach($event->purchases as $purchase)
+            <li class="mdl-list__item mdl-list__item--two-line">
+                <span class="mdl-list__item-primary-content">
+                    <i class="material-icons mdl-list__item-avatar">shopping_cart</i>
+                    <span>{{ $purchase->name }}</span>
+                    <span class="mdl-list__item-sub-title">
+                        {{ $purchase->created_at }} {{ $purchase->description }}
+                    </span>
+                </span>
+                <span class="mdl-list__item-secondary-content">
+                    <a  href="/events/{{ $event->id }}/purchases/{{ $purchase->id }}" class="mdl-list__item-secondary-action">
+                        <i class="material-icons">keyboard_arrow_right</i>
+                    </a>
+                </span>
+            </li>
+            @endforeach
+
+        </ul>
+    </div>
+
+</div>
+
 @endsection
