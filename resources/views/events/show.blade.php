@@ -35,14 +35,29 @@
             @foreach($event->purchases as $purchase)
             <li class="mdl-list__item mdl-list__item--two-line">
                 <span class="mdl-list__item-primary-content">
-                    <i class="material-icons mdl-list__item-avatar">shopping_cart</i>
+                    @if ($purchase->participants_count == 1)
+                    <i class="material-icons mdl-list__item-avatar">person</i>
                     <span>{{ $purchase->name }}</span>
                     <span class="mdl-list__item-sub-title">
-                        {{ $purchase->created_at }} {{ $purchase->description }}
+                        Личная покупка ({{ $purchase->participants[0]->name }}) на сумму
                     </span>
+                    @else
+                    <i class="material-icons mdl-list__item-avatar">shopping_cart</i>
+                    <span>{{ $purchase->name }}</span>
+                        @if ($purchase->participants_count < 5)
+                        <span class="mdl-list__item-sub-title">
+                            Покупка на сумму {{ $purchase->amount }} ₽, {{ $purchase->participants_count }} покупателя
+                        </span>
+                        @else
+                        <span class="mdl-list__item-sub-title">
+                            Покупка на сумму {{ $purchase->amount }}, {{ $purchase->participants_count }} покупателей
+                        </span>
+                        @endif
+                    @endif
                 </span>
                 <span class="mdl-list__item-secondary-content">
-                    <a  href="/events/{{ $event->id }}/purchases/{{ $purchase->id }}" class="mdl-list__item-secondary-action">
+                    <a href="/events/{{ $event->id }}/purchases/{{ $purchase->id }}"
+                       class="mdl-list__item-secondary-action">
                         <i class="material-icons">keyboard_arrow_right</i>
                     </a>
                 </span>

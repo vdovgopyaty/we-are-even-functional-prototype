@@ -10,6 +10,8 @@ class Purchase extends Model
         'name', 'description', 'image', 'event_id',
     ];
 
+    public $amount = 0;
+
     public function event()
     {
         return $this->belongsTo('App\Event');
@@ -18,5 +20,10 @@ class Purchase extends Model
     public function participants()
     {
         return $this->belongsToMany('App\Participant')->withPivot('amount');
+    }
+
+    public function getAmountAttribute()
+    {
+        return $this->pivot->sum('amount');
     }
 }

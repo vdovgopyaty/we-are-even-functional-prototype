@@ -86,8 +86,11 @@ class EventController extends Controller
     {
         $event = Auth::user()
             ->events()
-            ->with('purchases')
+            ->with(['purchases.participants', 'purchases' => function ($query) {
+                $query->withCount('participants');
+            }])
             ->withCount('participants')
+            ->withCount('purchases')
             ->find($id);
 
         if ($request->route()->getPrefix() == 'api') {
