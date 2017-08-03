@@ -14,21 +14,21 @@ class EventsTableSeeder extends Seeder
     {
         DB::table('events')->insert([
             [
-                'name' => 'Event 1',
-                'place' => 'Place',
-                'description' => 'Description',
+                'name' => 'Поездка в Лиетлахти',
+                'place' => 'Карелия',
+                'description' => 'Скальные сектора в окрестностях Треугольного озера и национального парка Лиетлахти',
                 'user_id' => 1,
             ],
             [
-                'name' => 'Event 2',
-                'place' => 'Place',
-                'description' => 'Description',
+                'name' => 'День рождения (личные расходы)',
+                'place' => 'Ресторан «Какой-нибудь»',
+                'description' => 'Если в событии только один покупатель, событие нужно считать личным и как-то выделить его на фоне остальных',
                 'user_id' => 1,
             ],
             [
-                'name' => 'User 2 Event 1',
-                'place' => 'Place',
-                'description' => 'Description',
+                'name' => 'Событие второго пользователя',
+                'place' => '',
+                'description' => 'Для тестирования безопасности',
                 'user_id' => 2,
             ],
         ]);

@@ -14,16 +14,24 @@ class PurchasesTableSeeder extends Seeder
     {
         DB::table('purchases')->insert([
             [
-                'name' => 'Purchase 1',
+                'name' => 'Продукты',
                 'event_id' => 1,
             ],
             [
-                'name' => 'Purchase 2',
+                'name' => 'Аренда дома',
                 'event_id' => 1,
             ],
             [
-                'name' => 'User 2 Purchase 1',
+                'name' => 'Покупка второго пользователя',
                 'event_id' => 3,
+            ],
+            [
+                'name' => 'Билеты',
+                'event_id' => 1,
+            ],
+            [
+                'name' => 'Личная покупка в личном событии',
+                'event_id' => 2,
             ],
         ]);
     }

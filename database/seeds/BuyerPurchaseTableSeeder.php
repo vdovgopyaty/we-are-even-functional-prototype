@@ -38,6 +38,26 @@ class BuyerPurchaseTableSeeder extends Seeder
                 'buyer_id' => 2,
                 'purchase_id' => 2,
             ],
+            [
+                'amount' => 400.00,
+                'buyer_id' => 3,
+                'purchase_id' => 4,
+            ],
+            [
+                'amount' => 600.00,
+                'buyer_id' => 4,
+                'purchase_id' => 5,
+            ],
+            [
+                'amount' => 150.00,
+                'buyer_id' => 5,
+                'purchase_id' => 3,
+            ],
+            [
+                'amount' => 250.00,
+                'buyer_id' => 6,
+                'purchase_id' => 3,
+            ],
         ]);
     }
 }
