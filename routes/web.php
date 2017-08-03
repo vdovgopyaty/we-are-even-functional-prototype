@@ -43,15 +43,15 @@ Route::middleware('auth')->group(function () {
         ]
     ]);
 
-    Route::resource('events.participants', 'ParticipantController', [
+    Route::resource('events.buyers', 'BuyerController', [
         'names' => [
-            'index' => 'participants',
-            'create' => 'participants.create',
-            'store' => 'participants.store',
-            'show' => 'participants.show',
-            'edit' => 'participants.edit',
-            'update' => 'participants.update',
-            'destroy' => 'participants.destroy',
+            'index' => 'buyers',
+            'create' => 'buyers.create',
+            'store' => 'buyers.store',
+            'show' => 'buyers.show',
+            'edit' => 'buyers.edit',
+            'update' => 'buyers.update',
+            'destroy' => 'buyers.destroy',
         ]
     ]);
 

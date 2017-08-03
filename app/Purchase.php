@@ -15,13 +15,13 @@ class Purchase extends Model
         return $this->belongsTo('App\Event');
     }
 
-    public function participants()
+    public function buyers()
     {
-        return $this->belongsToMany('App\Participant')->withPivot('amount');
+        return $this->belongsToMany('App\Buyer')->withPivot('amount');
     }
 
     public function getAmountAttribute()
     {
-        return $this->participants()->sum('amount');
+        return $this->buyers()->sum('amount');
     }
 }

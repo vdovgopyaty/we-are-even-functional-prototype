@@ -25,7 +25,7 @@ Route::middleware('auth:api')->group(function () {
     Route::resource('events.purchases', 'PurchaseController', ['only' => [
         'index', 'store', 'show', 'update', 'destroy'
     ]]);
-    Route::resource('events.participants', 'ParticipantController', ['only' => [
+    Route::resource('events.buyers', 'BuyerController', ['only' => [
         'index', 'store', 'show', 'update', 'destroy'
     ]]);
 });

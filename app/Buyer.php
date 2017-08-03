@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Participant extends Model
+class Buyer extends Model
 {
     protected $fillable = [
         'name', 'event_id',

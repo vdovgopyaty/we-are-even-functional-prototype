@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddNameToParticipantsTable extends Migration
+class CreateBuyersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class AddNameToParticipantsTable extends Migration
      */
     public function up()
     {
-        Schema::table('participants', function (Blueprint $table) {
-            $table->string('name');
+        Schema::create('buyers', function (Blueprint $table) {
+            $table->increments('id');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +26,6 @@ class AddNameToParticipantsTable extends Migration
      */
     public function down()
     {
-        Schema::table('participants', function (Blueprint $table) {
-            $table->dropColumn('name');
-        });
+        Schema::dropIfExists('buyers');
     }
 }

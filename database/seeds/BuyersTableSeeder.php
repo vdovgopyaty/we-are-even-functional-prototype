@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class ParticipantsTableSeeder extends Seeder
+class BuyersTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,17 +12,17 @@ class ParticipantsTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('participants')->insert([
+        DB::table('buyers')->insert([
             [
                 'name' => 'Vladislav',
                 'event_id' => 1,
             ],
             [
-                'name' => 'Participant 2',
+                'name' => 'Buyer 2',
                 'event_id' => 1,
             ],
             [
-                'name' => 'Participant 3',
+                'name' => 'Buyer 3',
                 'event_id' => 1,
             ],
             [
@@ -30,15 +30,15 @@ class ParticipantsTableSeeder extends Seeder
                 'event_id' => 2,
             ],
             [
-                'name' => 'Event 2 Participant 2',
+                'name' => 'Event 2 Buyer 2',
                 'event_id' => 2,
             ],
             [
-                'name' => 'User 2 Participant 1',
+                'name' => 'User 2 Buyer 1',
                 'event_id' => 3,
             ],
             [
-                'name' => 'User 2 Participant 2',
+                'name' => 'User 2 Buyer 2',
                 'event_id' => 3,
             ],
         ]);

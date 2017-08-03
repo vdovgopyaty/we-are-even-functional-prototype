@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class RemoveIdFromParticipantPurchaseTable extends Migration
+class RemoveIdFromBuyerPurchaseTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class RemoveIdFromParticipantPurchaseTable extends Migration
      */
     public function up()
     {
-        Schema::table('participant_purchase', function (Blueprint $table) {
+        Schema::table('buyer_purchase', function (Blueprint $table) {
             $table->dropColumn('id');
         });
     }
@@ -25,7 +25,7 @@ class RemoveIdFromParticipantPurchaseTable extends Migration
      */
     public function down()
     {
-        Schema::table('participant_purchase', function (Blueprint $table) {
+        Schema::table('buyer_purchase', function (Blueprint $table) {
             $table->increments('id');
         });
     }

@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
         $this->call('UsersTableSeeder');
         $this->call('EventsTableSeeder');
         $this->call('PurchasesTableSeeder');
-        $this->call('ParticipantsTableSeeder');
-        $this->call('ParticipantPurchaseTableSeeder');
+        $this->call('BuyersTableSeeder');
+        $this->call('BuyerPurchaseTableSeeder');
     }
 }

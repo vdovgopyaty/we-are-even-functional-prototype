@@ -28,9 +28,9 @@ class Event extends Model
         return $this->hasMany('App\Purchase');
     }
 
-    public function participants()
+    public function buyers()
     {
-        return $this->hasMany('App\Participant');
+        return $this->hasMany('App\Buyer');
     }
 
     public function getAmountAttribute()

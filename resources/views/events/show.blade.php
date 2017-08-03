@@ -36,22 +36,22 @@
             @foreach($event->purchases as $purchase)
             <li class="mdl-list__item mdl-list__item--two-line">
                 <span class="mdl-list__item-primary-content">
-                    @if ($purchase->participants_count == 1)
+                    @if ($purchase->buyers_count == 1)
                     <i class="material-icons mdl-list__item-avatar">person</i>
                     <span>{{ $purchase->name }}</span>
                     <span class="mdl-list__item-sub-title">
-                        Личная покупка ({{ $purchase->participants[0]->name }}) на сумму
+                        Личная покупка ({{ $purchase->buyers[0]->name }}) на сумму
                     </span>
                     @else
                     <i class="material-icons mdl-list__item-avatar">shopping_cart</i>
                     <span>{{ $purchase->name }}</span>
-                        @if ($purchase->participants_count < 5)
+                        @if ($purchase->buyers_count < 5)
                         <span class="mdl-list__item-sub-title">
-                            Покупка на сумму {{ number_format($purchase->amount, 0, ",", "") }} ₽, {{ $purchase->participants_count }} покупателя
+                            Покупка на сумму {{ number_format($purchase->amount, 0, ",", "") }} ₽, {{ $purchase->buyers_count }} покупателя
                         </span>
                         @else
                         <span class="mdl-list__item-sub-title">
-                            Покупка на сумму {{ number_format($purchase->amount, 0, ",", "") }}, {{ $purchase->participants_count }} покупателей
+                            Покупка на сумму {{ number_format($purchase->amount, 0, ",", "") }}, {{ $purchase->buyers_count }} покупателей
                         </span>
                         @endif
                     @endif

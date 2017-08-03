@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Participant;
+use App\Buyer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class ParticipantController extends Controller
+class BuyerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,7 +19,7 @@ class ParticipantController extends Controller
     {
         $purchases = Auth::user()
             ->events()->find($eventId)
-            ->participants()->get();
+            ->buyers()->get();
 
         if ($request->route()->getPrefix() == 'api') {
             return $purchases;
@@ -43,19 +43,19 @@ class ParticipantController extends Controller
      *
      * @param  \Illuminate\Http\Request $request
      * @param $eventId
-     * @param Participant $participant
+     * @param Buyer $buyer
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $eventId, Participant $participant)
+    public function store(Request $request, $eventId, Buyer $buyer)
     {
-        $participant->create(
+        $buyer->create(
             request([
                 'name', 'event_id' => $eventId
             ])
         );
 
         if ($request->route()->getPrefix() == 'api') {
-            return response()->json($participant, 201);
+            return response()->json($buyer, 201);
         } else {
             return redirect()->route('events.show', $eventId);
         }
@@ -93,14 +93,14 @@ class ParticipantController extends Controller
      */
     public function update(Request $request, $eventId, $id)
     {
-        $participant = Auth::user()
+        $buyer = Auth::user()
             ->events()->find($eventId)
-            ->participants()->find($id);
+            ->buyers()->find($id);
 
-        $participant->update(request('name'));
+        $buyer->update(request('name'));
 
         if ($request->route()->getPrefix() == 'api') {
-            return response()->json($participant, 200);
+            return response()->json($buyer, 200);
         } else {
             return redirect()->route('events.show', $eventId);
         }
@@ -116,11 +116,11 @@ class ParticipantController extends Controller
      */
     public function destroy(Request $request, $eventId, $id)
     {
-        $participant = Auth::user()
+        $buyer = Auth::user()
             ->events()->find($eventId)
-            ->participants()->find($id);
+            ->buyers()->find($id);
 
-        $participant->delete();
+        $buyer->delete();
 
         if ($request->route()->getPrefix() == 'api') {
             return response()->json(null, 204);

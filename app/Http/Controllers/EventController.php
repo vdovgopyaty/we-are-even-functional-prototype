@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Event;
-use App\Participant;
+use App\Buyer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -19,7 +19,7 @@ class EventController extends Controller
     {
         $events = Auth::user()->events()
             ->withCount('purchases')
-            ->withCount('participants')
+            ->withCount('buyers')
             ->get();
 
         if ($request->route()->getPrefix() == 'api') {
@@ -62,8 +62,8 @@ class EventController extends Controller
 
         $user = Auth::user();
 
-        $participant = new Participant();
-        $participant->create([
+        $buyer = new Buyer();
+        $buyer->create([
             'event_id' => $event['id'],
             'name' => $user['name'],
         ]);
@@ -86,10 +86,10 @@ class EventController extends Controller
     {
         $event = Auth::user()
             ->events()
-            ->with(['purchases.participants', 'purchases' => function ($query) {
-                $query->withCount('participants');
+            ->with(['purchases.buyers', 'purchases' => function ($query) {
+                $query->withCount('buyers');
             }])
-            ->withCount('participants')
+            ->withCount('buyers')
             ->withCount('purchases')
             ->find($id);
 
