@@ -11,14 +11,14 @@
                 <h2>Please sign in</h2>
             </div>
 
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <div class="mdl-textfield mdl-js-textfield">
                 <input class="mdl-textfield__input{{ $errors->has('email') ? ' has-error' : '' }}" type="email"
                        id="email"
                        name="email" value="{{ old('email') }}" required autofocus>
                 <label class="mdl-textfield__label" for="email">Email-адрес</label>
             </div>
 
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <div class="mdl-textfield mdl-js-textfield">
                 <input class="mdl-textfield__input{{ $errors->has('password') ? ' has-error' : '' }}" type="password"
                        id="password" name="password" required>
                 <label class="mdl-textfield__label" for="password">Пароль</label>

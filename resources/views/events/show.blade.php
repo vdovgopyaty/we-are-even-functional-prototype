@@ -23,6 +23,7 @@
                 <input class="mdl-textfield__input" type="text" id="sample1" value="{{ $event->description }}">
                 <label class="mdl-textfield__label" for="sample1">Описание</label>
             </div>
+            <p>{{ number_format($event->amount, 0, ",", "") }} ₽</p>
         </form>
     </div>
 
@@ -46,11 +47,11 @@
                     <span>{{ $purchase->name }}</span>
                         @if ($purchase->participants_count < 5)
                         <span class="mdl-list__item-sub-title">
-                            Покупка на сумму {{ $purchase->amount }} ₽, {{ $purchase->participants_count }} покупателя
+                            Покупка на сумму {{ number_format($purchase->amount, 0, ",", "") }} ₽, {{ $purchase->participants_count }} покупателя
                         </span>
                         @else
                         <span class="mdl-list__item-sub-title">
-                            Покупка на сумму {{ $purchase->amount }}, {{ $purchase->participants_count }} покупателей
+                            Покупка на сумму {{ number_format($purchase->amount, 0, ",", "") }}, {{ $purchase->participants_count }} покупателей
                         </span>
                         @endif
                     @endif

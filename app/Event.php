@@ -32,4 +32,13 @@ class Event extends Model
     {
         return $this->hasMany('App\Participant');
     }
+
+    public function getAmountAttribute()
+    {
+        $amount = 0;
+        foreach ($this->purchases()->get() as $purchase) {
+            $amount += $purchase->amount;
+        }
+        return $amount;
+    }
 }

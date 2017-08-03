@@ -22,6 +22,6 @@ class Purchase extends Model
 
     public function getAmountAttribute()
     {
-        return $this->participants()->first()->pivot->sum('amount'); // TODO: fix this error
+        return $this->participants()->sum('amount');
     }
 }
