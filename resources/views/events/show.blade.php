@@ -12,28 +12,41 @@
 @section('content')
 
 <div class="mdl-grid">
-
     <div class="mdl-cell mdl-cell--4-col mdl-cell--12-col-phone text-center">
         <form action="#">
-            <div class="mdl-textfield mdl-js-textfield">
-                <input class="mdl-textfield__input" type="text" id="sample1" value="{{ $event->place }}">
-                <label class="mdl-textfield__label" for="sample1">Место</label>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" id="place" value="{{ $event->place }}">
+                <label class="mdl-textfield__label" for="place">Место</label>
             </div>
-            <div class="mdl-textfield mdl-js-textfield">
-                <input class="mdl-textfield__input" type="text" id="sample1" value="{{ $event->description }}">
-                <label class="mdl-textfield__label" for="sample1">Описание</label>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <textarea class="mdl-textfield__input" type="text" rows="3" id="description">{{ $event->description }}</textarea>
+                <label class="mdl-textfield__label" for="description">Описание</label>
             </div>
-            <p>{{ number_format($event->amount, 0, ",", "") }} ₽</p>
+            @if ($event->purchases_count == 0)
+            <div class="mdl-typography--title">
+                Сделайте новую покупку
+            </div>
+            @elseif ($event->purchases_count == 1)
+            <div class="mdl-typography--title">
+                {{ $event->purchases_count }} покупка на сумму {{ number_format($event->amount, 0, ",", "") }} ₽
+            </div>
+            @elseif ($event->purchases_count < 5)
+            <div class="mdl-typography--title">
+                {{ $event->purchases_count }} покупки на сумму {{ number_format($event->amount, 0, ",", "") }} ₽
+            </div>
+            @else
+            <div class="mdl-typography--title">
+                {{ $event->purchases_count }} покупок на сумму {{ number_format($event->amount, 0, ",", "") }} ₽
+            </div>
+            @endif
         </form>
     </div>
-
 </div>
 <div class="mdl-grid purchases">
-
     <div class="mdl-cell mdl-cell--4-col mdl-cell--12-col-phone">
         <ul class="mdl-list">
 
-            @foreach($event->purchases as $purchase)
+            @foreach ($event->purchases as $purchase)
             <li class="mdl-list__item mdl-list__item--two-line">
                 <span class="mdl-list__item-primary-content">
                     @if ($purchase->buyers_count == 1)
@@ -67,7 +80,9 @@
 
         </ul>
     </div>
-
 </div>
+<a href="/events/create" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+    <i class="material-icons">add</i>
+</a>
 
 @endsection

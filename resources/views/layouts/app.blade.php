@@ -13,15 +13,27 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,light,medium&lang=ru" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.teal-indigo.min.css">
 
     <style>
         .text-center {
             text-align: center;
         }
+        .text-right {
+            text-align: right;
+        }
         .mdl-card {
             width: 100%;
             min-height: 180px;
+        }
+        .mdl-card .mdl-card__title {
+            background: url("https://getmdl.io/assets/demos/welcome_card.jpg") center center / cover;
+            color: #fff;
+            height: 126px;
+        }
+        .mdl-card .mdl-card__menu {
+            color: #fff;
         }
         .mdl-list .mdl-list__item-avatar {
             font-size: 28px;
@@ -38,6 +50,11 @@
             .mdl-layout__drawer-button {
                 color: rgb(255,255,255);
             }
+        }
+        .mdl-button--fab {
+            position: absolute;
+            bottom: 25px;
+            right: 15px;
         }
     </style>
 
