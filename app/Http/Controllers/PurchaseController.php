@@ -71,9 +71,10 @@ class PurchaseController extends Controller
      */
     public function show(Request $request, $eventId, $id)
     {
-        $purchase = Auth::user()
-            ->events()->find($eventId)
-            ->purchases()->with('buyers')->find($id);
+        $purchase = Auth::user()->events()->find($eventId)
+            ->purchases()->with(['event.buyers.purchases' => function ($query) use ($id) {
+                $query->find($id);
+            }])->with('buyers')->find($id);
 
         if ($request->route()->getPrefix() == 'api') {
             return $purchase;
@@ -94,7 +95,7 @@ class PurchaseController extends Controller
     {
         $purchase = Auth::user()
             ->events()->find($eventId)
-            ->purchases()->find($id);
+            ->purchases()->with('buyers')->find($id);
 
         return view('purchases.edit', compact('purchase'));
     }

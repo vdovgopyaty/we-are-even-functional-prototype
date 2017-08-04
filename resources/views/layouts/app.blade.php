@@ -55,6 +55,10 @@
             margin-top: -35px;
         }
 
+        .buyer-purchases .mdl-textfield {
+
+        }
+
         @media screen and (max-width: 1024px) {
             .mdl-layout__drawer-button {
                 color: rgb(255, 255, 255);
