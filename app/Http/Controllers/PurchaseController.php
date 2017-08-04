@@ -73,8 +73,8 @@ class PurchaseController extends Controller
     {
         $purchase = Auth::user()->events()->find($eventId)
             ->purchases()->with(['event.buyers.purchases' => function ($query) use ($id) {
-                $query->find($id);
-            }])->with('buyers')->find($id);
+                $query->where('purchases.id', '=', $id);
+            }])->with('buyers.purchases')->find($id);
 
         if ($request->route()->getPrefix() == 'api') {
             return $purchase;

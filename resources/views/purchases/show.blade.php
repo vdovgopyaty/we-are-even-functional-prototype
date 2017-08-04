@@ -36,8 +36,8 @@
                 <label class="mdl-textfield__label" for="name{{ $key }}">Имя</label>
             </div>
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell mdl-cell--6-col">
-                @if ($buyer->purchases()->first())
-                <input class="mdl-textfield__input" type="text" id="amount{{ $key }}" value="{{ number_format($buyer->purchases()->first()->pivot->amount, 0, ',', '') }}">
+                @if ($buyer->purchases->first())
+                <input class="mdl-textfield__input" type="text" id="amount{{ $key }}" value="{{ number_format($buyer->purchases[0]->pivot->amount, 0, ',', '') }}">
                 @else
                 <input class="mdl-textfield__input" type="text" id="amount{{ $key }}" value="">
                 @endif
