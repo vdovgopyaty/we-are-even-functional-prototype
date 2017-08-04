@@ -31,33 +31,41 @@ class PurchaseController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * @param $eventId
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($eventId)
     {
-        return view('purchases.create');
+        $event = Auth::user()->events()->find($eventId);
+
+        return view('purchases.create', compact('event'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param $eventId
      * @param Purchase $purchase
+     * @param $eventId
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $eventId, Purchase $purchase)
+    public function store(Request $request, Purchase $purchase, $eventId)
     {
-        $purchase->create(
-            request([
-                'name', 'description', 'image', 'event_id' => $eventId
-            ])
-        );
+        $this->validate(request(), [
+            'name' => 'required|max:60',
+            'description' => 'max:255',
+        ]);
+
+        $event = Auth::user()->events()->find($eventId);
+
+        $purchase = $event->purchases()->create($request->only([
+            'name', 'description', 'image',
+        ]));
 
         if ($request->route()->getPrefix() == 'api') {
             return response()->json($purchase, 201);
         } else {
-            return redirect()->route('purchases.show', $purchase);
+            return redirect()->route('purchases.show', [$event, $purchase]);
         }
     }
 
@@ -114,11 +122,9 @@ class PurchaseController extends Controller
             ->events()->find($eventId)
             ->purchases()->find($id);
 
-        $purchase->update(
-            request([
-                'name', 'description', 'image'
-            ])
-        );
+        $purchase->update($request->only([
+            'name', 'description', 'image',
+        ]));
 
         if ($request->route()->getPrefix() == 'api') {
             return response()->json($purchase, 200);
@@ -146,7 +152,7 @@ class PurchaseController extends Controller
         if ($request->route()->getPrefix() == 'api') {
             return response()->json(null, 204);
         } else {
-            return redirect()->route('purchases.index');
+            return redirect()->route('events.show', $eventId);
         }
     }
 }

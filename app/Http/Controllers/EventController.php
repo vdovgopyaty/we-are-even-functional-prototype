@@ -49,24 +49,19 @@ class EventController extends Controller
     public function store(Request $request, Event $event)
     {
         $this->validate(request(), [
-            'name' => 'required|max:30',
+            'name' => 'required|max:60',
             'place' => 'max:30',
             'description' => 'max:255',
         ]);
 
-        $event = $event->create(
-            request([
-                'name', 'place', 'description', 'image',
-            ])
-        );
+        $event = $event->create($request->only([
+            'name', 'place', 'description', 'image',
+        ]));
 
-        $user = Auth::user();
-
-        $buyer = new Buyer();
-        $buyer->create([
-            'event_id' => $event['id'],
-            'name' => $user['name'],
+        $buyer = new Buyer([
+            'name' => Auth::user()['name'],
         ]);
+        $event->buyers()->save($buyer);
 
         if ($request->route()->getPrefix() == 'api') {
             return response()->json($event, 201);
@@ -130,11 +125,9 @@ class EventController extends Controller
 
         $event = Auth::user()->events()->find($id);
 
-        $event->update(
-            request([
-                'name', 'place', 'description', 'image'
-            ])
-        );
+        $event->update($request->only([
+            'name', 'place', 'description', 'image',
+        ]));
 
         if ($request->route()->getPrefix() == 'api') {
             return response()->json($event, 200);

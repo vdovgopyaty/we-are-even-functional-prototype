@@ -18,6 +18,12 @@
     <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.teal-indigo.min.css">
 
     <style>
+        hr {
+            border-top: 1px solid rgba(0, 0, 0, .06);
+            margin-top: 6px;
+            margin-bottom: 6px;
+        }
+
         .text-center {
             text-align: center;
         }
@@ -31,10 +37,13 @@
             min-height: 180px;
         }
 
-        .mdl-card .mdl-card__title {
-            background: url("https://getmdl.io/assets/demos/welcome_card.jpg") center center / cover;
-            color: #fff;
-            height: 126px;
+        .mdl-card .mdl-card__media {
+            max-height: 126px;
+            overflow: hidden;
+        }
+
+        .mdl-card .mdl-card__media img {
+            max-width: 100%;
         }
 
         .mdl-card .mdl-card__menu {
@@ -67,13 +76,23 @@
 
         .mdl-button.mdl-button--fab {
             position: absolute;
-            bottom: 25px;
-            right: 15px;
+            bottom: 45px;
+            right: 25px;
             z-index: 1;
         }
 
         .mdl-navigation__link--full-bleed-divider {
             border-bottom: 1px solid rgba(0, 0, 0, .12);
+        }
+
+        .mdl-typography--subtitle {
+            font-weight: 700;
+            color: rgba(0, 0, 0, .54);
+        }
+
+        .mdl-dialog__title {
+            font-size: 1.7rem;
+            font-weight: 500;
         }
     </style>
 
@@ -100,6 +119,7 @@
             <div class="mdl-layout-spacer"></div>
             @yield('menu-right-button')
         </div>
+        @yield('menu-bottom-row')
     </header>
 
     @section('menu')
@@ -118,6 +138,8 @@
     </main>
 </div>
 
+@yield('fab')
+
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"
         integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
@@ -125,5 +147,7 @@
 <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 <!-- Scripts -->
 <script src="{{ asset('js/app.js') }}"></script>
+<!-- Page scripts -->
+@yield('footer-scripts')
 </body>
 </html>

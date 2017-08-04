@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Buyer extends Model
 {
     protected $fillable = [
-        'name', 'event_id',
+        'name',
     ];
 
     public function event()

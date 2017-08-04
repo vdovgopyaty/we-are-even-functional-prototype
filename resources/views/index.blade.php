@@ -15,6 +15,16 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.teal-indigo.min.css">
 
+    <style>
+        .text-center {
+            text-align: center;
+        }
+        .mdl-button {
+            margin-left: 5px;
+            margin-right: 5px;
+        }
+    </style>
+
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -38,7 +48,7 @@
         </div>
     </header>
     <div class="mdl-layout__drawer">
-        <span class="mdl-layout-title">Title</span>
+        <span class="mdl-layout-title">Меню</span>
         <nav class="mdl-navigation">
             @include('layouts.nav')
         </nav>
@@ -47,11 +57,11 @@
         <div class="page-content">
             <div class="mdl-grid">
                 <div class="mdl-cell mdl-cell--12-col">
-                    <h1>We`re even</h1>
-                    <h2>О приложении</h2>
-
-                    <a class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect" href="{{ route('login') }}">Войти</a>
-                    <a class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" href="{{ route('register') }}">Зарегистрироваться</a>
+                    <h1 class="mdl-typography--headline">О приложении</h1>
+                    <div class="text-center">
+                        <a class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect" href="{{ route('login') }}">Войти</a>
+                        <a class="mdl-button mdl-js-button mdl-js-ripple-effect" href="{{ route('register') }}">Зарегистрироваться</a>
+                    </div>
                 </div>
             </div>
         </div>

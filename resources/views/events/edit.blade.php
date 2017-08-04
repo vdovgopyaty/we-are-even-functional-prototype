@@ -10,14 +10,9 @@
 @section('title', 'Изменение события')
 
 @section('menu-right-button')
-<form method="POST" action="{{ action('EventController@destroy', $event) }}" style="display: inline-block">
-    {{ csrf_field() }}
-    {!! method_field('delete') !!}
-
-    <button type="submit" class="mdl-button mdl-js-button mdl-button--icon">
-        <i class="material-icons">delete</i>
-    </button>
-</form>
+<button type="submit" id="delete-event-button" class="mdl-button mdl-js-button mdl-button--icon">
+    <i class="material-icons">delete</i>
+</button>
 @endsection
 
 @section('content')
@@ -40,12 +35,47 @@
                           id="description">{{ $event->description }}</textarea>
                 <label class="mdl-textfield__label" for="description">Описание</label>
             </div>
-            <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
-                Сохранить
-            </button>
+            <div class="mdl-grid">
+                <div class="mdl-cell mdl-cell--12-col">
+                    <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                        Сохранить
+                    </button>
+                </div>
+            </div>
 
             @include('layouts.errors')
         </form>
     </div>
 </div>
+<div id="delete-event-snackbar" class="mdl-js-snackbar mdl-snackbar">
+    <div class="mdl-snackbar__text"></div>
+    <button class="mdl-snackbar__action mdl-button--primary" type="button"></button>
+</div>
+<form id="delete-event" method="POST" action="{{ action('EventController@destroy', $event) }}" style="display: none;">
+    {{ csrf_field() }}
+    {!! method_field('delete') !!}
+</form>
+@endsection
+
+@section('footer-scripts')
+<script>
+    (function () {
+        'use strict';
+        var snackbarContainer = document.querySelector('#delete-event-snackbar');
+        var showSnackbarButton = document.querySelector('#delete-event-button');
+        var handler = function (event) {
+            document.querySelector('#delete-event').submit();
+        };
+        showSnackbarButton.addEventListener('click', function () {
+            'use strict';
+            var data = {
+                message: 'Удалить событие?',
+                timeout: 3000,
+                actionHandler: handler,
+                actionText: 'Да'
+            };
+            snackbarContainer.MaterialSnackbar.showSnackbar(data);
+        });
+    }());
+</script>
 @endsection

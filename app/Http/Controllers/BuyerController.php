@@ -48,11 +48,9 @@ class BuyerController extends Controller
      */
     public function store(Request $request, $eventId, Buyer $buyer)
     {
-        $buyer->create(
-            request([
-                'name', 'event_id' => $eventId
-            ])
-        );
+        $buyer->create($request->only([
+            'name', 'event_id' => $eventId
+        ]));
 
         if ($request->route()->getPrefix() == 'api') {
             return response()->json($buyer, 201);

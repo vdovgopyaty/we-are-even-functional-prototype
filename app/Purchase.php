@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Purchase extends Model
 {
     protected $fillable = [
-        'name', 'description', 'image', 'event_id',
+        'name', 'description', 'image',
     ];
 
     public function event()
