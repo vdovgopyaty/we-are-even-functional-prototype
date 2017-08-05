@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('menu')
-<div id="update-purchase-button" aria-expanded="false"
+<div id="save-amounts-button" aria-expanded="false"
      role="button" tabindex="0" class="mdl-layout__drawer-button">
     <i class="material-icons">keyboard_arrow_left</i>
 </div>
@@ -23,25 +23,26 @@
 <ul class="mdl-list">
     <li class="mdl-list__item">
         <span class="mdl-list__item-primary-content">
-            Общая стоимость {{ number_format($purchase->amount, 0, ",", "") }} ₽
+            Общая стоимость&nbsp;<span data-amount>{{ number_format($purchase->amount, 0, ",", "") }}</span>&nbsp;₽
         </span>
     </li>
 </ul>
 <hr>
 <div class="mdl-grid">
     <div class="mdl-cell mdl-cell--12-col text-center">
-        <form id="update-purchase" method="POST"
-              action="{{ action('PurchaseController@update', [$purchase->event, $purchase]) }}">
+        <form id="save-amounts" method="POST"
+              action="{{ action('BuyerController@saveAmounts', [$purchase->event, $purchase]) }}">
             {{ csrf_field() }}
-            {!! method_field('patch') !!}
 
             @foreach ($purchase->event->buyers as $key => $buyer)
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                 @if ($buyer->purchases->first())
-                <input class="mdl-textfield__input" type="text" id="buyer{{ $buyer->id }}" name="buyer{{ $buyer->id }}"
+                <input class="mdl-textfield__input" type="number" pattern="-?[0-9]*(\.[0-9]+)?"
+                       id="buyer{{ $buyer->id }}" name="buyer{{ $buyer->id }}"
                        value="{{ number_format($buyer->purchases[0]->pivot->amount, 0, ',', '') }}">
                 @else
-                <input class="mdl-textfield__input" type="text" id="buyer{{ $buyer->id }}" name="buyer{{ $buyer->id }}">
+                <input class="mdl-textfield__input" type="number" pattern="-?[0-9]*(\.[0-9]+)?"
+                       id="buyer{{ $buyer->id }}" name="buyer{{ $buyer->id }}">
                 @endif
                 <label class="mdl-textfield__label" for="buyer{{ $buyer->id }}">{{ $buyer->name }}</label>
             </div>
@@ -88,8 +89,22 @@
 <script>
     (function () {
         'use strict';
-        $('#update-purchase-button').on('click', function () {
-            $('#update-purchase').submit();
+        $('#save-amounts-button').on('click', function () {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            var form = $('#save-amounts');
+            console.log(form.serialize());
+            $.ajax({
+                type: form.attr('method'),
+                url: form.attr('action'),
+                data: form.serialize(),
+                success: function (data) {
+                   console.log(data);
+                }
+            });
         });
     }());
 </script>
@@ -113,16 +128,16 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-
             var form = $('#create-buyer');
             $.ajax({
                 type: form.attr('method'),
                 url: form.attr('action'),
                 data: form.serialize(),
                 success: function (data) {
-                    var container = $('#update-purchase');
+                    var container = $('#save-amounts');
                     container.append('<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">' +
-                        '<input class="mdl-textfield__input" type="text" id="buyer' + data.id + '" name="buyer' + data.id + '">' +
+                        '<input class="mdl-textfield__input" type="number" pattern="-?[0-9]*(\.[0-9]+)?" ' +
+                        'id="buyer' + data.id + '" name="buyer' + data.id + '">' +
                         '<label class="mdl-textfield__label" for="buyer' + data.id + '">' + data.name + '</label>' +
                         '</div>');
                     componentHandler.upgradeDom();

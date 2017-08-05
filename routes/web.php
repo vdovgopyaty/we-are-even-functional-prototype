@@ -55,4 +55,7 @@ Route::middleware('auth')->group(function () {
         ]
     ]);
 
+    Route::post('events/{event}/purchases/{purchase}/saveAmounts', 'BuyerController@saveAmounts')
+        ->name('buyers.saveAmounts');
+
 });

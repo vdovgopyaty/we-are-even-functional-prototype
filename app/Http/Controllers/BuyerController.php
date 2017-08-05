@@ -127,4 +127,36 @@ class BuyerController extends Controller
             return redirect()->route('events.show', $eventId);
         }
     }
+
+    /**
+     * Save a buyers amounts in purchase.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param $eventId
+     * @param $purchaseId
+     * @return \Illuminate\Http\Response
+     */
+    public function saveAmounts(Request $request, $eventId, $purchaseId)
+    {
+        $purchase = Auth::user()
+            ->events()->find($eventId)
+            ->purchases()->find($purchaseId);
+
+        $amounts = $request->except(['_token']);
+        $sync = [];
+        foreach ($amounts as $amount) {
+            if ($amount) {
+                $key = str_replace('buyer', '', array_search($amount, $amounts));
+                $sync[$key] = ['amount' => floatval($amount)];
+            }
+        }
+
+        $buyers = $purchase->buyers()->sync($sync);
+
+        if ($request->ajax() || $request->route()->getPrefix() == 'api') {
+            return response()->json($buyers, 200);
+        } else {
+            return redirect()->route('purchases.show', [$eventId, $purchase]);
+        }
+    }
 }

@@ -28,4 +28,7 @@ Route::middleware('auth:api')->group(function () {
     Route::resource('events.buyers', 'BuyerController', ['only' => [
         'index', 'store', 'show', 'update', 'destroy'
     ]]);
+
+    Route::post('events/{event}/purchases/{purchase}/saveAmounts', 'BuyerController@saveAmounts')
+        ->name('buyers.saveAmounts');
 });
