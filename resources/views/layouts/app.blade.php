@@ -32,6 +32,10 @@
             text-align: right;
         }
 
+        .hide {
+            display: none;
+        }
+
         .mdl-card {
             width: 100%;
             min-height: 180px;
@@ -43,7 +47,7 @@
         }
 
         .mdl-card .mdl-card__media img {
-            max-width: 100%;
+            width: 100%;
         }
 
         .mdl-card .mdl-card__menu {

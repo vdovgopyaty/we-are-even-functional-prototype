@@ -7,9 +7,11 @@
     @foreach($events as $event)
     <div class="mdl-cell mdl-cell--4-col mdl-cell--12-col-phone">
         <div class="mdl-card mdl-shadow--2dp">
+            @if ($event->image)
             <div class="mdl-card__media">
                 <img src="{{ $event->image }}" alt="">
             </div>
+            @endif
             <div class="mdl-card__title">
                 <h2 class="mdl-card__title-text">{{ $event->name }}</h2>
             </div>

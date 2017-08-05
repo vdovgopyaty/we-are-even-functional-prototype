@@ -22,7 +22,7 @@ class EventController extends Controller
             ->withCount('buyers')
             ->get();
 
-        if ($request->route()->getPrefix() == 'api') {
+        if ($request->ajax() || $request->route()->getPrefix() == 'api') {
             return $events;
         } else {
             return view('events.index', compact('events'));
@@ -63,7 +63,7 @@ class EventController extends Controller
         ]);
         $event->buyers()->save($buyer);
 
-        if ($request->route()->getPrefix() == 'api') {
+        if ($request->ajax() || $request->route()->getPrefix() == 'api') {
             return response()->json($event, 201);
         } else {
             return redirect()->route('events.show', $event);
@@ -88,7 +88,7 @@ class EventController extends Controller
             ->withCount('purchases')
             ->find($id);
 
-        if ($request->route()->getPrefix() == 'api') {
+        if ($request->ajax() || $request->route()->getPrefix() == 'api') {
             return $event;
         } else {
             return view('events.show', compact('event'));
@@ -129,7 +129,7 @@ class EventController extends Controller
             'name', 'place', 'description', 'image',
         ]));
 
-        if ($request->route()->getPrefix() == 'api') {
+        if ($request->ajax() || $request->route()->getPrefix() == 'api') {
             return response()->json($event, 200);
         } else {
             return redirect()->route('events.show', $event);
@@ -148,7 +148,7 @@ class EventController extends Controller
         $event = Auth::user()->events()->find($id);
         $event->delete();
 
-        if ($request->route()->getPrefix() == 'api') {
+        if ($request->ajax() || $request->route()->getPrefix() == 'api') {
             return response()->json(null, 204);
         } else {
             return redirect()->route('events.index');

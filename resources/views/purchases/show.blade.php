@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('menu')
-<div onclick="javascript:location.href='{{ url()->previous() }}'" aria-expanded="false" role="button" tabindex="0"
-     class="mdl-layout__drawer-button">
+<div id="update-purchase-button" aria-expanded="false"
+     role="button" tabindex="0" class="mdl-layout__drawer-button">
     <i class="material-icons">keyboard_arrow_left</i>
 </div>
 @endsection
@@ -10,10 +10,10 @@
 @section('title', $purchase->name)
 
 @section('menu-right-button')
-<button id="demo-menu-lower-right" class="mdl-button mdl-js-button mdl-button--icon">
+<button id="menu-lower-right" class="mdl-button mdl-js-button mdl-button--icon">
     <i class="material-icons">more_vert</i>
 </button>
-<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="demo-menu-lower-right">
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="menu-lower-right">
     <li class="mdl-menu__item">Переименовать</li>
     <li id="delete-purchase-button" class="mdl-menu__item">Удалить</li>
 </ul>
@@ -29,27 +29,37 @@
 </ul>
 <hr>
 <div class="mdl-grid">
-    <div id="amounts" class="mdl-cell mdl-cell--12-col text-center">
-        @foreach ($purchase->event->buyers as $key => $buyer)
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            @if ($buyer->purchases->first())
-            <input class="mdl-textfield__input" type="text" id="amount{{ $key }}"
-                   value="{{ number_format($buyer->purchases[0]->pivot->amount, 0, ',', '') }}">
-            @else
-            <input class="mdl-textfield__input" type="text" id="amount{{ $key }}">
-            @endif
-            <label class="mdl-textfield__label" for="amount{{ $key }}">{{ $buyer->name }}</label>
-        </div>
-        @endforeach
+    <div class="mdl-cell mdl-cell--12-col text-center">
+        <form id="update-purchase" method="POST"
+              action="{{ action('PurchaseController@update', [$purchase->event, $purchase]) }}">
+            {{ csrf_field() }}
+            {!! method_field('patch') !!}
+
+            @foreach ($purchase->event->buyers as $key => $buyer)
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                @if ($buyer->purchases->first())
+                <input class="mdl-textfield__input" type="text" id="buyer{{ $buyer->id }}" name="buyer{{ $buyer->id }}"
+                       value="{{ number_format($buyer->purchases[0]->pivot->amount, 0, ',', '') }}">
+                @else
+                <input class="mdl-textfield__input" type="text" id="buyer{{ $buyer->id }}" name="buyer{{ $buyer->id }}">
+                @endif
+                <label class="mdl-textfield__label" for="buyer{{ $buyer->id }}">{{ $buyer->name }}</label>
+            </div>
+            @endforeach
+        </form>
     </div>
 </div>
 <dialog class="mdl-dialog">
     <h4 class="mdl-dialog__title">Добавление нового покупателя</h4>
     <div class="mdl-dialog__content">
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="text" id="newBuyerName">
-            <label class="mdl-textfield__label" for="newBuyerName">Имя</label>
-        </div>
+        <form id="create-buyer" method="POST"
+              action="{{ action('BuyerController@store', $purchase->event) }}">
+            {{ csrf_field() }}
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" id="create-buyer-name" name="name">
+                <label class="mdl-textfield__label" for="create-buyer-name">Имя</label>
+            </div>
+        </form>
     </div>
     <div class="mdl-dialog__actions">
         <button type="button" class="mdl-button create">Создать</button>
@@ -78,6 +88,14 @@
 <script>
     (function () {
         'use strict';
+        $('#update-purchase-button').on('click', function () {
+            $('#update-purchase').submit();
+        });
+    }());
+</script>
+<script>
+    (function () {
+        'use strict';
         var dialog = document.querySelector('dialog');
         var showDialogButton = document.querySelector('#create-buyer-button');
         if (!dialog.showModal) {
@@ -90,16 +108,28 @@
             dialog.close();
         });
         dialog.querySelector('.create').addEventListener('click', function () {
-            var amounts = document.querySelector('#amounts');
-            var name = document.querySelector('#newBuyerName');
-            var count = amounts.childElementCount;
-            amounts.insertAdjacentHTML('beforeend', '<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">' +
-                '<input class="mdl-textfield__input" type="text" id="amount' + (count + 1) + '">' +
-                '<label class="mdl-textfield__label" for="amount' + (count + 1) + '">' + name.value + '</label>' +
-                '</div>');
-            componentHandler.upgradeDom();
-            dialog.close();
-            name.value = '';
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            var form = $('#create-buyer');
+            $.ajax({
+                type: form.attr('method'),
+                url: form.attr('action'),
+                data: form.serialize(),
+                success: function (data) {
+                    var container = $('#update-purchase');
+                    container.append('<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">' +
+                        '<input class="mdl-textfield__input" type="text" id="buyer' + data.id + '" name="buyer' + data.id + '">' +
+                        '<label class="mdl-textfield__label" for="buyer' + data.id + '">' + data.name + '</label>' +
+                        '</div>');
+                    componentHandler.upgradeDom();
+                    form.find('input[name="name"]').val('');
+                    dialog.close();
+                }
+            });
         });
     }());
 </script>

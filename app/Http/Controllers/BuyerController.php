@@ -21,7 +21,7 @@ class BuyerController extends Controller
             ->events()->find($eventId)
             ->buyers()->get();
 
-        if ($request->route()->getPrefix() == 'api') {
+        if ($request->ajax() || $request->route()->getPrefix() == 'api') {
             return $purchases;
         } else {
             return view('purchases.index', compact('purchases'));
@@ -43,16 +43,17 @@ class BuyerController extends Controller
      *
      * @param  \Illuminate\Http\Request $request
      * @param $eventId
-     * @param Buyer $buyer
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $eventId, Buyer $buyer)
+    public function store(Request $request, $eventId)
     {
-        $buyer->create($request->only([
-            'name', 'event_id' => $eventId
+        $event = Auth::user()->events()->find($eventId);
+
+        $buyer = $event->buyers()->create($request->only([
+            'name',
         ]));
 
-        if ($request->route()->getPrefix() == 'api') {
+        if ($request->ajax() || $request->route()->getPrefix() == 'api') {
             return response()->json($buyer, 201);
         } else {
             return redirect()->route('events.show', $eventId);
@@ -97,7 +98,7 @@ class BuyerController extends Controller
 
         $buyer->update(request('name'));
 
-        if ($request->route()->getPrefix() == 'api') {
+        if ($request->ajax() || $request->route()->getPrefix() == 'api') {
             return response()->json($buyer, 200);
         } else {
             return redirect()->route('events.show', $eventId);
@@ -120,7 +121,7 @@ class BuyerController extends Controller
 
         $buyer->delete();
 
-        if ($request->route()->getPrefix() == 'api') {
+        if ($request->ajax() || $request->route()->getPrefix() == 'api') {
             return response()->json(null, 204);
         } else {
             return redirect()->route('events.show', $eventId);

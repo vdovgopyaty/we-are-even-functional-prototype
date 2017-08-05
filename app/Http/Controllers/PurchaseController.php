@@ -21,7 +21,7 @@ class PurchaseController extends Controller
             ->events()->find($eventId)
             ->purchases()->get();
 
-        if ($request->route()->getPrefix() == 'api') {
+        if ($request->ajax() || $request->route()->getPrefix() == 'api') {
             return $purchases;
         } else {
             return view('purchases.index', compact('purchases'));
@@ -49,7 +49,7 @@ class PurchaseController extends Controller
      * @param $eventId
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Purchase $purchase, $eventId)
+    public function store(Request $request, $eventId, Purchase $purchase)
     {
         $this->validate(request(), [
             'name' => 'required|max:60',
@@ -62,7 +62,7 @@ class PurchaseController extends Controller
             'name', 'description', 'image',
         ]));
 
-        if ($request->route()->getPrefix() == 'api') {
+        if ($request->ajax() || $request->route()->getPrefix() == 'api') {
             return response()->json($purchase, 201);
         } else {
             return redirect()->route('purchases.show', [$event, $purchase]);
@@ -84,7 +84,7 @@ class PurchaseController extends Controller
                 $query->where('purchases.id', '=', $id);
             }])->with('buyers.purchases')->find($id);
 
-        if ($request->route()->getPrefix() == 'api') {
+        if ($request->ajax() || $request->route()->getPrefix() == 'api') {
             return $purchase;
         } else {
             return view('purchases.show', compact('purchase'));
@@ -126,10 +126,10 @@ class PurchaseController extends Controller
             'name', 'description', 'image',
         ]));
 
-        if ($request->route()->getPrefix() == 'api') {
+        if ($request->ajax() || $request->route()->getPrefix() == 'api') {
             return response()->json($purchase, 200);
         } else {
-            return redirect()->route('purchases.show', $purchase);
+            return redirect()->route('purchases.show', [$eventId, $purchase]);
         }
     }
 
@@ -149,10 +149,10 @@ class PurchaseController extends Controller
 
         $purchase->delete();
 
-        if ($request->route()->getPrefix() == 'api') {
+        if ($request->ajax() || $request->route()->getPrefix() == 'api') {
             return response()->json(null, 204);
         } else {
-            return redirect()->route('events.show', $eventId);
+            return redirect()->route('events.show');
         }
     }
 }
