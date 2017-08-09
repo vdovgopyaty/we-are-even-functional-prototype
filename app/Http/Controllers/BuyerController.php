@@ -142,16 +142,16 @@ class BuyerController extends Controller
             ->events()->find($eventId)
             ->purchases()->find($purchaseId);
 
-        $amounts = $request->except(['_token']);
-        $sync = [];
-        foreach ($amounts as $amount) {
-            if ($amount) {
-                $key = str_replace('buyer', '', array_search($amount, $amounts));
-                $sync[$key] = ['amount' => floatval($amount)];
+        $amounts = $request->except('_token');
+        $amountsSync = [];
+        foreach ($amounts as $key => $amount) {
+            if (is_numeric($amount)) {
+                $key = str_replace('buyer', '', $key);
+                $amountsSync[$key] = ['amount' => $amount];
             }
         }
 
-        $buyers = $purchase->buyers()->sync($sync);
+        $buyers = $purchase->buyers()->sync($amountsSync);
 
         if ($request->ajax() || $request->route()->getPrefix() == 'api') {
             return response()->json($buyers, 200);
