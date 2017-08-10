@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('menu')
-<div id="save-amounts-button" aria-expanded="false"
-     role="button" tabindex="0" class="mdl-layout__drawer-button">
+<div onclick="javascript:location.href='/events/{{ $purchase->event->id }}'" aria-expanded="false" role="button"
+     tabindex="0" class="mdl-layout__drawer-button">
     <i class="material-icons">keyboard_arrow_left</i>
 </div>
 @endsection
@@ -15,7 +15,7 @@
 </button>
 <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="menu-lower-right">
     <li class="mdl-menu__item">Переименовать</li>
-    <li id="delete-purchase-button" class="mdl-menu__item">Удалить</li>
+    <li id="deletePurchaseButton" class="mdl-menu__item">Удалить</li>
 </ul>
 @endsection
 
@@ -30,7 +30,7 @@
 <hr>
 <div class="mdl-grid">
     <div class="mdl-cell mdl-cell--12-col text-center">
-        <form id="save-amounts" method="POST"
+        <form id="saveAmounts" method="POST"
               action="{{ action('BuyerController@saveAmounts', [$purchase->event, $purchase]) }}">
             {{ csrf_field() }}
 
@@ -48,30 +48,40 @@
             </div>
             @endforeach
         </form>
+        <div class="mdl-grid">
+            <div class="mdl-cell mdl-cell--12-col">
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+                        id="saveAmountsButton">Сохранить
+                </button>
+            </div>
+        </div>
     </div>
 </div>
 <dialog class="mdl-dialog">
     <h4 class="mdl-dialog__title">Добавление нового покупателя</h4>
     <div class="mdl-dialog__content">
-        <form id="create-buyer" method="POST"
-              action="{{ action('BuyerController@store', $purchase->event) }}">
+        <form id="createBuyer" method="POST" action="{{ action('BuyerController@store', $purchase->event) }}">
             {{ csrf_field() }}
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input class="mdl-textfield__input" type="text" id="create-buyer-name" name="name">
-                <label class="mdl-textfield__label" for="create-buyer-name">Имя</label>
+                <input class="mdl-textfield__input" type="text" id="createBuyerName" name="name">
+                <label class="mdl-textfield__label" for="createBuyerName">Имя</label>
             </div>
         </form>
     </div>
     <div class="mdl-dialog__actions">
-        <button type="button" class="mdl-button create">Создать</button>
+        <button type="button" class="mdl-button mdl-js-button mdl-button--primary create">Создать</button>
         <button type="button" class="mdl-button close">Отмена</button>
     </div>
 </dialog>
-<div id="delete-purchase-snackbar" class="mdl-js-snackbar mdl-snackbar">
+<div id="saveAmountsSnackbar" class="mdl-js-snackbar mdl-snackbar">
     <div class="mdl-snackbar__text"></div>
     <button class="mdl-snackbar__action mdl-button--primary" type="button"></button>
 </div>
-<form id="delete-purchase" method="POST"
+<div id="deletePurchaseSnackbar" class="mdl-js-snackbar mdl-snackbar">
+    <div class="mdl-snackbar__text"></div>
+    <button class="mdl-snackbar__action mdl-button--primary" type="button"></button>
+</div>
+<form id="deletePurchase" method="POST"
       action="{{ action('PurchaseController@destroy', [$purchase->event, $purchase]) }}" style="display: none;">
     {{ csrf_field() }}
     {!! method_field('delete') !!}
@@ -79,7 +89,7 @@
 @endsection
 
 @section('fab')
-<button id="create-buyer-button" type="button"
+<button id="createBuyerButton" type="button"
         class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
     <i class="material-icons">add</i>
 </button>
@@ -89,20 +99,33 @@
 <script>
     (function () {
         'use strict';
-        $('#save-amounts-button').on('click', function () {
+        $('#saveAmountsButton').on('click', function (event) {
+            event.preventDefault();
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            var form = $('#save-amounts');
-            console.log(form.serialize());
+            var form = $('#saveAmounts');
             $.ajax({
                 type: form.attr('method'),
                 url: form.attr('action'),
                 data: form.serialize(),
-                success: function (data) {
-                   console.log(data);
+                success: function () {
+                    var snackbarContainer = document.querySelector('#saveAmountsSnackbar');
+                    var data = {
+                        message: 'Суммы сохранены',
+                        timeout: 1500
+                    };
+                    snackbarContainer.MaterialSnackbar.showSnackbar(data);
+                },
+                error: function () {
+                    var snackbarContainer = document.querySelector('#saveAmountsSnackbar');
+                    var data = {
+                        message: 'Ошибка при сохранении сумм',
+                        timeout: 1500
+                    };
+                    snackbarContainer.MaterialSnackbar.showSnackbar(data);
                 }
             });
         });
@@ -112,7 +135,7 @@
     (function () {
         'use strict';
         var dialog = document.querySelector('dialog');
-        var showDialogButton = document.querySelector('#create-buyer-button');
+        var showDialogButton = document.querySelector('#createBuyerButton');
         if (!dialog.showModal) {
             dialogPolyfill.registerDialog(dialog);
         }
@@ -128,13 +151,13 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            var form = $('#create-buyer');
+            var form = $('#createBuyer');
             $.ajax({
                 type: form.attr('method'),
                 url: form.attr('action'),
                 data: form.serialize(),
                 success: function (data) {
-                    var container = $('#save-amounts');
+                    var container = $('#saveAmounts');
                     container.append('<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">' +
                         '<input class="mdl-textfield__input" type="number" pattern="-?[0-9]*(\.[0-9]+)?" ' +
                         'id="buyer' + data.id + '" name="buyer' + data.id + '">' +
@@ -151,10 +174,10 @@
 <script>
     (function () {
         'use strict';
-        var snackbarContainer = document.querySelector('#delete-purchase-snackbar');
-        var showSnackbarButton = document.querySelector('#delete-purchase-button');
+        var snackbarContainer = document.querySelector('#deletePurchaseSnackbar');
+        var showSnackbarButton = document.querySelector('#deletePurchaseButton');
         var handler = function (event) {
-            document.querySelector('#delete-purchase').submit();
+            document.querySelector('#deletePurchase').submit();
         };
         showSnackbarButton.addEventListener('click', function () {
             'use strict';

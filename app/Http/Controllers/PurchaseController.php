@@ -152,7 +152,7 @@ class PurchaseController extends Controller
         if ($request->ajax() || $request->route()->getPrefix() == 'api') {
             return response()->json(null, 204);
         } else {
-            return redirect()->route('events.show');
+            return redirect()->route('events.show', $eventId);
         }
     }
 }
