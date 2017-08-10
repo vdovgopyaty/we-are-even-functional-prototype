@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('menu')
-<div onclick="javascript:location.href='{{ url()->previous() }}'" aria-expanded="false" role="button" tabindex="0"
+<div onclick="javascript:location.href='/events'" aria-expanded="false" role="button" tabindex="0"
      class="mdl-layout__drawer-button">
     <i class="material-icons">close</i>
 </div>

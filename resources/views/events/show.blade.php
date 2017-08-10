@@ -9,6 +9,16 @@
 
 @section('title', $event->name)
 
+@section('menu-right-button')
+<button id="menu-lower-right" class="mdl-button mdl-js-button mdl-button--icon">
+    <i class="material-icons">more_vert</i>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="menu-lower-right">
+    <li><a class="mdl-menu__item" href="/events/{{ $event->id }}/edit">Редактировать</a></li>
+    <li><a class="mdl-menu__item" href="#">Показать отчет</a></li>
+</ul>
+@endsection
+
 @section('content')
 <ul class="mdl-list">
     <li class="mdl-list__item">
@@ -35,6 +45,12 @@
             <span>{{ $purchase->name }}</span>
             <span class="mdl-list__item-sub-title">
                 {{ number_format($purchase->amount, 0, ",", "") }} ₽, {{ $purchase->buyers[0]->name }}
+            </span>
+            @elseif ($purchase->buyers_count == 0)
+            <i class="material-icons mdl-list__item-avatar">remove_shopping_cart</i>
+            <span>{{ $purchase->name }}</span>
+            <span class="mdl-list__item-sub-title">
+                {{ number_format($purchase->amount, 0, ",", "") }} ₽
             </span>
             @else
             <i class="material-icons mdl-list__item-avatar">shopping_cart</i>

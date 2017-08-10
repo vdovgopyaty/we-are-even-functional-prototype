@@ -23,10 +23,6 @@
                    class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
                     Открыть
                 </a>
-                <a href="/events/{{ $event->id }}/edit"
-                   class="mdl-button mdl-js-button mdl-js-ripple-effect">
-                    Редактировать
-                </a>
             </div>
         </div>
     </div>

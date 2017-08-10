@@ -36,9 +36,16 @@
             display: none;
         }
 
+        .mdl-layout-title {
+            max-width: 82%;
+            white-space: nowrap;
+            overflow: hidden;
+            padding-bottom: 1px;
+        }
+
         .mdl-card {
             width: 100%;
-            min-height: 180px;
+            min-height: 140px;
         }
 
         .mdl-card .mdl-card__media {

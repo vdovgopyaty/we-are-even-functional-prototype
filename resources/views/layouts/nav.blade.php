@@ -2,7 +2,8 @@
 <a class="mdl-navigation__link" href="{{ route('login') }}">Войти</a>
 <a class="mdl-navigation__link" href="{{ route('register') }}">Зарегистрироваться</a>
 @else
-<a class="mdl-navigation__link mdl-navigation__link--full-bleed-divider" href="{{ route('events') }}">События</a>
+<a class="mdl-navigation__link" href="{{ route('events') }}">События</a>
+<a class="mdl-navigation__link" href="#">Отчеты</a>
 <a class="mdl-navigation__link" href="{{ route('logout') }}"
    onclick="event.preventDefault();document.getElementById('logout-form').submit();">
     Выход
