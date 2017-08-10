@@ -3,7 +3,7 @@
 @section('menu')
 <div onclick="javascript:location.href='/events'" aria-expanded="false" role="button" tabindex="0"
      class="mdl-layout__drawer-button">
-    <i class="material-icons">keyboard_arrow_left</i>
+    <i class="material-icons">chevron_left</i>
 </div>
 @endsection
 
@@ -15,7 +15,7 @@
 </button>
 <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="menu-lower-right">
     <li><a class="mdl-menu__item" href="/events/{{ $event->id }}/edit">Редактировать</a></li>
-    <li><a class="mdl-menu__item" href="#">Показать отчет</a></li>
+    <li class="mdl-menu__item" id="calculateDebtsButton">Расчитать долги</li>
 </ul>
 @endsection
 
@@ -75,10 +75,53 @@
     </li>
     @endforeach
 </ul>
+<dialog id="showDebtsDialog" class="mdl-dialog">
+    <h4 class="mdl-dialog__title">Долги</h4>
+    <div class="mdl-dialog__content">
+        @foreach ($debts as $debt)
+        <p>
+            <span class="mdl-chip mdl-chip--deletable">
+                <span class="mdl-chip__text">{{ number_format($debt, 0, ",", "") }} ₽</span>
+                <button type="button" class="mdl-chip__action"><i class="material-icons">arrow_forward</i></button>
+            </span>
+        </p>
+        @endforeach
+        <p>
+            <span class="mdl-chip__around-text">Владислав</span>
+            <span class="mdl-chip mdl-chip--deletable">
+                <span class="mdl-chip__text">1000 ₽</span>
+                <button type="button" class="mdl-chip__action"><i class="material-icons">arrow_forward</i></button>
+            </span>
+            <span class="mdl-chip__around-text">Ольга</span>
+        </p>
+    </div>
+    <div class="mdl-dialog__actions">
+        <button type="button" class="mdl-button close">Закрыть</button>
+    </div>
+</dialog>
 @endsection
 
 @section('fab')
 <a href="/events/{{ $event->id }}/purchases/create" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
     <i class="material-icons">add</i>
 </a>
+@endsection
+
+@section('footer-scripts')
+<script>
+    (function () {
+        'use strict';
+        var dialog = document.querySelector('#showDebtsDialog');
+        var showDialogButton = document.querySelector('#calculateDebtsButton');
+        if (!dialog.showModal) {
+            dialogPolyfill.registerDialog(dialog);
+        }
+        showDialogButton.addEventListener('click', function () {
+            dialog.showModal();
+        });
+        dialog.querySelector('.close').addEventListener('click', function () {
+            dialog.close();
+        });
+    }());
+</script>
 @endsection

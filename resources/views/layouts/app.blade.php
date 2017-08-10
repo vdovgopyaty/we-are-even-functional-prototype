@@ -105,6 +105,17 @@
             font-size: 1.7rem;
             font-weight: 500;
         }
+
+        .mdl-chip__around-text {
+            position: relative;
+            top: 4px;
+            color: rgba(0,0,0,.87);
+        }
+
+        .mdl-chip__around-text + .mdl-chip,
+        .mdl-chip + .mdl-chip__around-text {
+            margin-left: 4px;
+        }
     </style>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->

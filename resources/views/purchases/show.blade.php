@@ -3,7 +3,7 @@
 @section('menu')
 <div onclick="javascript:location.href='/events/{{ $purchase->event->id }}'" aria-expanded="false" role="button"
      tabindex="0" class="mdl-layout__drawer-button">
-    <i class="material-icons">keyboard_arrow_left</i>
+    <i class="material-icons">chevron_left</i>
 </div>
 @endsection
 
@@ -57,7 +57,7 @@
         </div>
     </div>
 </div>
-<dialog class="mdl-dialog">
+<dialog id="createBuyerDialog" class="mdl-dialog">
     <h4 class="mdl-dialog__title">Добавление нового покупателя</h4>
     <div class="mdl-dialog__content">
         <form id="createBuyer" method="POST" action="{{ action('BuyerController@store', $purchase->event) }}">
@@ -134,7 +134,7 @@
 <script>
     (function () {
         'use strict';
-        var dialog = document.querySelector('dialog');
+        var dialog = document.querySelector('#createBuyerDialog');
         var showDialogButton = document.querySelector('#createBuyerButton');
         if (!dialog.showModal) {
             dialogPolyfill.registerDialog(dialog);

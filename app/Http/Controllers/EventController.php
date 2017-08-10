@@ -88,10 +88,14 @@ class EventController extends Controller
             ->withCount('purchases')
             ->find($id);
 
+        $debts = Event::calculateDebts($event);
+
         if ($request->ajax() || $request->route()->getPrefix() == 'api') {
             return $event;
         } else {
-            return view('events.show', compact('event'));
+//            return view('events.show', compact('event'));
+
+            return view('events.show', compact(['event', 'debts']));
         }
     }
 
