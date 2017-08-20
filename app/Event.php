@@ -45,14 +45,15 @@ class Event extends Model
     public static function calculateDebts(Event $event)
     {
         $debts = [];
-
-        foreach ($event->purchases as $key => $purchase) {
+        foreach ($event->purchases as $purchase) {
             $average = $purchase->amount / $purchase->buyers_count;
             foreach ($purchase->buyers as $buyer) {
-                if (array_key_exists($buyer->id, $debts)) {
-                    $debts[$buyer->id] += $average - $buyer->pivot->amount;
+                $id = $buyer->id;
+                $amount = $average - $buyer->pivot->amount;
+                if (array_key_exists($id, $debts)) {
+                    $debts[$id] += $amount;
                 } else {
-                    $debts[$buyer->id] = $average - $buyer->pivot->amount;
+                    $debts[$id] = $amount;
                 }
             }
         }
