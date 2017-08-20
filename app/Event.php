@@ -58,12 +58,47 @@ class Event extends Model
             }
         }
 
-        uasort($debts, function ($a, $b) {
-            if ($a == $b) {
-                return 0;
+        $debts = Event::totalDebtsToPersonalDebts($debts);
+
+        return $debts;
+    }
+
+    /**
+     * Bring the total debts to the form of personal debts
+     * with a minimum number of transactions between participants
+     *
+     * @param $totalDebts
+     * @return array
+     */
+    private static function totalDebtsToPersonalDebts($totalDebts)
+    {
+        $debts = [];
+
+        while (!empty($totalDebts)) {
+            $max = max($totalDebts);
+            $min = min($totalDebts);
+            $maxKey = array_keys($totalDebts, $max)[0];
+            $minKey = array_keys($totalDebts, $min)[0];
+
+            $min = abs($min);
+            if ($max > $min) {
+                unset($totalDebts[$minKey]);
+                $totalDebts[$maxKey] = $max - $min;
+            } elseif ($max < $min) {
+                unset($totalDebts[$maxKey]);
+                $totalDebts[$minKey] = $max - $min;
+            } else {
+                unset($totalDebts[$maxKey]);
+                unset($totalDebts[$minKey]);
             }
-            return (abs($a) > abs($b)) ? -1 : 1;
-        });
+
+            // TODO: fix multiple database requests
+            $debts[] = [
+                'from' => Buyer::find($maxKey)->name,
+                'to' => Buyer::find($minKey)->name,
+                'amount' => min($max, $min)
+            ];
+        }
 
         return $debts;
     }

@@ -80,20 +80,14 @@
     <div class="mdl-dialog__content">
         @foreach ($debts as $debt)
         <p>
+            <span class="mdl-chip__around-text">{{ $debt['from'] }}</span>
             <span class="mdl-chip mdl-chip--deletable">
-                <span class="mdl-chip__text">{{ number_format($debt, 0, ",", "") }} ₽</span>
+                <span class="mdl-chip__text">{{ number_format($debt['amount'], 0, ",", "") }} ₽</span>
                 <button type="button" class="mdl-chip__action"><i class="material-icons">arrow_forward</i></button>
             </span>
+            <span class="mdl-chip__around-text">{{ $debt['to'] }}</span>
         </p>
         @endforeach
-        <p>
-            <span class="mdl-chip__around-text">Владислав</span>
-            <span class="mdl-chip mdl-chip--deletable">
-                <span class="mdl-chip__text">1000 ₽</span>
-                <button type="button" class="mdl-chip__action"><i class="material-icons">arrow_forward</i></button>
-            </span>
-            <span class="mdl-chip__around-text">Ольга</span>
-        </p>
     </div>
     <div class="mdl-dialog__actions">
         <button type="button" class="mdl-button close">Закрыть</button>
