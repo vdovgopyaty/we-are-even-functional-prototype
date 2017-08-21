@@ -46,7 +46,7 @@ class Event extends Model
     {
         $debts = [];
         foreach ($event->purchases as $purchase) {
-            $average = $purchase->amount / $purchase->buyers_count;
+            $average = ($purchase->buyers_count) ? $purchase->amount / $purchase->buyers_count : 0;
             foreach ($purchase->buyers as $buyer) {
                 $id = $buyer->id;
                 $amount = $average - $buyer->pivot->amount;

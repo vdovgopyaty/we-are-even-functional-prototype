@@ -93,8 +93,6 @@ class EventController extends Controller
         if ($request->ajax() || $request->route()->getPrefix() == 'api') {
             return $event;
         } else {
-//            return view('events.show', compact('event'));
-
             return view('events.show', compact(['event', 'debts']));
         }
     }
