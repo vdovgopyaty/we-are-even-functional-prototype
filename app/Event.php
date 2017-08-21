@@ -60,7 +60,7 @@ class Event extends Model
 
         foreach ($debts as $key => $debt) {
             // TODO: transfer the value of the permissible error to the configuration file
-            if ($debt < 0.001) {
+            if (abs($debt) < 0.001) {
                 unset($debts[$key]);
             }
         }
