@@ -78,7 +78,7 @@
 <dialog id="showDebtsDialog" class="mdl-dialog">
     <h4 class="mdl-dialog__title">Долги</h4>
     <div class="mdl-dialog__content">
-        @foreach ($debts as $debt)
+        @forelse ($debts as $debt)
         <p>
             <span class="mdl-chip__around-text">{{ $debt['from'] }}</span>
             <span class="mdl-chip mdl-chip--deletable">
@@ -87,7 +87,9 @@
             </span>
             <span class="mdl-chip__around-text">{{ $debt['to'] }}</span>
         </p>
-        @endforeach
+        @empty
+        <p>Вы в расчёте!</p>
+        @endforelse
     </div>
     <div class="mdl-dialog__actions">
         <button type="button" class="mdl-button close">Закрыть</button>

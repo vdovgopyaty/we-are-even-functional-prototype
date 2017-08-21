@@ -53,7 +53,9 @@ class Event extends Model
                 if (array_key_exists($id, $debts)) {
                     $debts[$id] += $amount;
                 } else {
-                    $debts[$id] = $amount;
+                    if ($amount != 0) {
+                        $debts[$id] = $amount;
+                    }
                 }
             }
         }
