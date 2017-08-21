@@ -51,17 +51,17 @@ class Event extends Model
                 $id = $buyer->id;
                 $amount = $average - $buyer->pivot->amount;
                 if (array_key_exists($id, $debts)) {
-                    // TODO: transfer the value of the permissible error to the configuration file
-                    if ($debts[$id] + $amount < 0.001) {
-                        unset($debts[$id]);
-                    } else {
-                        $debts[$id] += $amount;
-                    }
+                    $debts[$id] += $amount;
                 } else {
-                    if ($amount != 0) {
-                        $debts[$id] = $amount;
-                    }
+                    $debts[$id] = $amount;
                 }
+            }
+        }
+
+        foreach ($debts as $key => $debt) {
+            // TODO: transfer the value of the permissible error to the configuration file
+            if ($debt < 0.001) {
+                unset($debts[$key]);
             }
         }
 
