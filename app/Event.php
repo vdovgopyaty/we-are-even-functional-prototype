@@ -81,15 +81,16 @@ class Event extends Model
             $minKey = array_keys($totalDebts, $min)[0];
 
             $min = abs($min);
-            if ($max > $min) {
+            $log[] = $max - $min;
+            if (abs($max - $min) < 0.001) {
+                unset($totalDebts[$maxKey]);
+                unset($totalDebts[$minKey]);
+            } elseif ($max > $min) {
                 unset($totalDebts[$minKey]);
                 $totalDebts[$maxKey] = $max - $min;
-            } elseif ($max < $min) {
-                unset($totalDebts[$maxKey]);
-                $totalDebts[$minKey] = $max - $min;
             } else {
                 unset($totalDebts[$maxKey]);
-                unset($totalDebts[$minKey]);
+                $totalDebts[$minKey] = $max - $min;
             }
 
             // TODO: fix multiple database requests
